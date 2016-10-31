@@ -71,11 +71,7 @@ Loop:
 					fmt.Printf("Message successfully sent to channel %s at %s", channelID, timestamp)
 				}
 				if a.Msg.Text == "birthday" {
-					lines, err := getLines(*birthdayFile)
-					if err != nil {
-						log.Fatal(err)
-					}
-					fmt.Println("LINES*****************", lines)
+					giveNotification()
 				}
 			case *slack.InvalidAuthEvent:
 				fmt.Printf("Invalid credentials")

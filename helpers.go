@@ -4,9 +4,14 @@ import (
 	"bufio"
 	"errors"
 	"fmt"
+	"log"
 	"os"
+	"strconv"
+	"strings"
+	"time"
 
 	"github.com/nlopes/slack"
+	"github.com/roylee0704/gron"
 )
 
 func getChannelID(client *slack.Client, channelname string) (string, error) {
@@ -22,19 +27,51 @@ func getChannelID(client *slack.Client, channelname string) (string, error) {
 	return "", errors.New("No channel id with the channel name found")
 }
 
-func getLines(filepath string) ([]string, error) {
+type BirthDay struct {
+	Name  string
+	Month string
+	Day   int
+}
+
+func getLines(filepath string) ([]BirthDay, error) {
 	file, err := os.Open(filepath)
 	if err != nil {
 		return nil, err
 	}
 	defer file.Close()
-	var lines []string
+	var birthDays []BirthDay
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
-		lines = append(lines, scanner.Text())
-		fmt.Println(scanner.Text())
-		fmt.Println("**************")
+		name := strings.Split(scanner.Text(), ":")
+		splits := strings.Split(scanner.Text(), " ")
+		day, err := strconv.Atoi(splits[1])
+		if err != nil {
+			return nil, err
+		}
+		birthDays = append(birthDays, BirthDay{name[0], splits[2], day})
 	}
-	return lines, scanner.Err()
+	return birthDays, scanner.Err()
 
+}
+func print() {
+	_, monthnow, daynow := time.Now().Date()
+	_, monthprev, dayprev := time.Now().Add(24 * time.Hour).Date()
+	dates, err := getLines(*birthdayFile)
+	if err != nil {
+		log.Fatal(err)
+	}
+	for _, date := range dates {
+		if date.Month == monthnow.String() && daynow == date.Day {
+			fmt.Printf("Wish birthday to %s", date.Name)
+		} else if date.Month == monthprev.String() && dayprev == date.Day {
+			fmt.Printf("Plan birthday for %s", date.Name)
+		}
+	}
+
+}
+func giveNotification() {
+	c := gron.New()
+	// c.AddFunc(gron.Every(1 * xtime.Day).At("10:00"),print)
+	c.AddFunc(gron.Every(1*time.Second), print)
+	c.Start()
 }
