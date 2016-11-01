@@ -11,7 +11,8 @@ import (
 var (
 	slackBotToken = flag.String("slackbottoken", "", "Token for the slack bot that is to be integrated with")
 	channelName   = flag.String("channelname", "", "channel name where slack bot is to be integrated")
-	birthdayFile  = flag.String("birthdayfile", "", "the file that contains slackusername: dd/mm/yyyy(birthday) in each line")
+	birthdayFile  = flag.String("birthdayfile", "", "the file that contains birthdaypersonname: Day Month(birthday) in each line")
+	eventTime     = flag.String("eventTime", "", "Set a time of when to remind you of your events")
 )
 
 func main() {

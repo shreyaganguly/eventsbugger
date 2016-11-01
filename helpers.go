@@ -22,7 +22,7 @@ func getRandomBirthdayURL() string {
 
 func giveNotification() {
 	c := gron.New()
-	// c.AddFunc(gron.Every(1 * xtime.Day).At("10:00"),print)
+	// c.AddFunc(gron.Every(1 * xtime.Day).At(*eventTime),print)
 	c.AddFunc(gron.Every(10*time.Second), birthday)
 	c.Start()
 }
