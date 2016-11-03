@@ -75,19 +75,21 @@ func birthday() {
 		if date.Month == monthnow.String() && daynow == date.Day {
 			message := fmt.Sprintf("Wish birthday to %s", date.Name)
 			birthdayID, err := getUserID(date.Name)
-			if err.Error() == "No userID found" {
-				message = fmt.Sprintf("%s is not on slack, give him/her a call", date.Name)
-				chanID, timestamp, errpost := client.PostMessage(channelID, message, slack.PostMessageParameters{})
-				if errpost != nil {
-					fmt.Printf("%s\n", errpost)
+			if err != nil {
+				if err.Error() == "No userID found" {
+					message = fmt.Sprintf("%s is not on slack, give him/her a call", date.Name)
+					chanID, timestamp, errpost := client.PostMessage(channelID, message, slack.PostMessageParameters{})
+					if errpost != nil {
+						fmt.Printf("%s\n", errpost)
+						return
+					}
+					fmt.Printf("Message successfully sent to channel %s at %s", chanID, timestamp)
+					return
+				} else {
+					fmt.Printf("%s\n", err)
 					return
 				}
-				fmt.Printf("Message successfully sent to channel %s at %s", chanID, timestamp)
-				return
-			}
-			if err != nil {
-				fmt.Printf("%s\n", err)
-				return
+
 			}
 			members, err := getMembers()
 			if err != nil {

@@ -42,6 +42,7 @@ Loop:
 				if a.Msg.Text == "birthday" {
 					setSlackClient(api, chanID)
 					giveNotification()
+					getRepositories()
 				}
 			case *slack.InvalidAuthEvent:
 				fmt.Printf("Invalid credentials")
