@@ -7,6 +7,8 @@ import (
 	"log"
 	"net/http"
 	"net/url"
+	"strings"
+	"time"
 )
 
 type Repositories struct {
@@ -18,9 +20,11 @@ type Repositories struct {
 	} `json:"items"`
 }
 
-func getRepositories() {
+func github() {
 	v := url.Values{}
-	v.Add("q", "language:go+created:>2016-09-26")
+	d := strings.Split(time.Now().Add(-24*7*time.Hour).String(), " ")[0]
+	queryString := fmt.Sprintf("language:go+created:>%s", d)
+	v.Add("q", queryString)
 	v.Add("sort", "stars")
 	v.Add("order", "desc")
 	query, err := url.QueryUnescape(v.Encode())
