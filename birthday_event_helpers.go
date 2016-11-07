@@ -47,7 +47,7 @@ func postBirthdayMessage(members []slack.IM, bID, message string) {
 			// 	fmt.Printf("%s\n", err)
 			// 	return
 			// }
-			fmt.Printf("Message successfully sent to channel %s at %s", channelID, "123")
+			fmt.Printf("Message successfully sent to channel %s at %s", bchannelID, "123")
 		} else {
 			params := slack.PostMessageParameters{
 				UnfurlLinks: true,
@@ -78,7 +78,7 @@ func birthday() {
 			if err != nil {
 				if err.Error() == "No userID found" {
 					message = fmt.Sprintf("%s is not on slack, give him/her a call", date.Name)
-					chanID, timestamp, errpost := client.PostMessage(channelID, message, slack.PostMessageParameters{})
+					chanID, timestamp, errpost := client.PostMessage(bchannelID, message, slack.PostMessageParameters{})
 					if errpost != nil {
 						fmt.Printf("%s\n", errpost)
 						return

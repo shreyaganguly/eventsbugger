@@ -7,13 +7,15 @@ import (
 )
 
 var (
-	client    *slack.Client
-	channelID string
+	client     *slack.Client
+	bchannelID string
+	gchannelID string
 )
 
-func setSlackClient(c *slack.Client, cID string) {
+func setSlackClient(c *slack.Client, bID string, gID string) {
 	client = c
-	channelID = cID
+	bchannelID = bID
+	gchannelID = gID
 }
 
 func getChannelID(client *slack.Client, channelname string) (string, error) {
